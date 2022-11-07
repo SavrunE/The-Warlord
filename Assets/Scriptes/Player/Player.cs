@@ -5,7 +5,6 @@ using Photon.Pun;
 using TMPro;
 
 [RequireComponent(typeof(PhotonView))]
-[RequireComponent(typeof(PhotonTransformViewClassic))]
 public class Player : MonoBehaviour
 {
     [SerializeField] private TMP_Text nickName;
