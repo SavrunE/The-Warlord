@@ -15,7 +15,15 @@ public class BounceApplication : MonoBehaviour
 	public BounceModel model;
 	public BounceView view;
 	public BounceController controller;
+	public void Notify(string p_event_path, Object p_target, params object[] p_data)
+	{
+		BounceController[] controller_list = GetAllControllers();
+		foreach (BounceController c in controller_list)
+		{
+			c.OnNotification(p_event_path, p_target, p_data);
+		}
+	}
 
-	// Init things here
-	void Start() { }
+	// Fetches all scene Controllers.
+	public BounceController[] GetAllControllers() { return FindObjectsOfType<BounceController>(); /* ... */ }
 }

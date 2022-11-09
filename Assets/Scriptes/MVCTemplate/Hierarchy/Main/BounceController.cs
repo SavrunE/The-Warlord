@@ -5,19 +5,28 @@ using UnityEngine.XR;
 
 public class BounceController : BounceElement
 {
-	// Handles the ball hit event
-	public void OnBallGroundHit()
+	public void OnNotification(string p_event_path, Object p_target, params object[] p_data)
 	{
-		app.model.bounces++;
-		Debug.Log("Bounce " + app.model.bounces);
-		if (app.model.bounces >= app.model.winCondition)
+		switch (p_event_path)
 		{
-			app.view.ball.enabled = false;
-			app.view.ball.GetComponent<Rigidbody>().isKinematic = true; // stops the ball
-			OnGameComplete();
+			case "sas":
+				break;
+			case BounceNotification.BallHitGround:
+				app.model.bounces++;
+				Debug.Log("Bounce ”+app.model.bounce");
+				if (app.model.bounces >= app.model.winCondition)
+				{
+					app.view.ball.enabled = false;
+					app.view.ball.GetComponent<Rigidbody>().isKinematic = true; // stops the ball
+																				// Notify itself and other controllers possibly interested in the event
+					app.Notify(BounceNotification.GameComplete, this);
+				}
+				break;
+
+			case BounceNotification.GameComplete:
+				Debug.Log("Victory!!");
+				break;
 		}
 	}
 
-	// Handles the win condition
-	public void OnGameComplete() { Debug.Log("game won"); }
 }
